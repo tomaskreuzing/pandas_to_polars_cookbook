@@ -11,6 +11,9 @@ complaints.head()
 
 # %%
 # TODO: rewrite the above using the polars library and call the data frame pl_complaints
+# Hint: we need the dtype argument reading all columns in as strings above in Pandas due to the zip code column containing NaNs as "NA" and some zip codes containing a dash like 1234-456
+# you cannot exactly do the same in Polars but you can read about some other solutions here:
+# see a discussion about dtype argument here: https://github.com/pola-rs/polars/issues/8230
 
 # %%
 # Selecting columns:
