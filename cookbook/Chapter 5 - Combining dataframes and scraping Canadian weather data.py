@@ -40,6 +40,9 @@ weather_mar2012 = pd.read_csv(
 )
 weather_mar2012.head()
 
+# TODO: rewrite using Polars
+
+
 # %%
 # Let's clean up the data a bit.
 # You'll notice in the summary above that there are a few columns which are are either entirely empty or only have a few values in them. Let's get rid of all of those with `dropna`.
@@ -48,6 +51,9 @@ weather_mar2012 = weather_mar2012.dropna(axis=1, how="any")
 weather_mar2012[:5]
 
 # This is much better now -- we only have columns with real data.
+
+# TODO: rewrite using Polars
+
 
 # %%
 # Let's get rid of columns that we do not need.
@@ -71,6 +77,9 @@ weather_mar2012.columns = weather_mar2012.columns.str.replace(
 weather_mar2012.columns = weather_mar2012.columns.str.replace(
     "Â", ""
 )  # Remove the weird characters at the
+
+# TODO: rewrite using Polars
+
 
 # %%
 # Optionally, you can also rename columns more manually for specific cases:
@@ -177,4 +186,3 @@ weather_2012.head()
 weather_2012.to_csv("../data/weather_2012.csv")
 
 # TODO: use polars to save the data.
-# %%
