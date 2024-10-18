@@ -62,14 +62,13 @@ rows_with_dashes = requests["Incident Zip"].str.contains("-").fillna(False)
 len(requests[rows_with_dashes])
 requests[rows_with_dashes]
 
-# I thought these were missing data and originally deleted them like this:
-# `requests['Incident Zip'][rows_with_dashes] = np.nan`
-# But then 9-digit zip codes are normal. Let's look at all the zip codes with more than 5 digits, make sure they're okay, and then truncate them.
-
 # TODO: please implement this with Polars
 
 
 # %%
+# I thought these were missing data and originally deleted them like this:
+# `requests['Incident Zip'][rows_with_dashes] = np.nan`
+# But then 9-digit zip codes are normal. Let's look at all the zip codes with more than 5 digits, make sure they're okay, and then truncate them.
 long_zip_codes = requests["Incident Zip"].str.len() > 5
 requests["Incident Zip"][long_zip_codes].unique()
 requests["Incident Zip"] = requests["Incident Zip"].str.slice(0, 5)
