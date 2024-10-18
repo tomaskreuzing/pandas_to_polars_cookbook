@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # Reading data from a csv file
 # You can read data from a CSV file using the `read_csv` function. By default, it assumes that the fields are comma-separated.
 
-# We're going to be looking some cyclist data from Montréal. Here's the [original page](http://donnees.ville.montreal.qc.ca/dataset/velos-comptage) (in French), but it's already included in this repository. We're using the data from 2012.
+# We're going to be looking at some cyclist data from Montréal. Here's the [original page](http://donnees.ville.montreal.qc.ca/dataset/velos-comptage) (in French), but it's already included in this repository. We're using the data from 2012.
 
 # This dataset is a list of how many people were on 7 different bike paths in Montreal, each day.
 
@@ -40,7 +40,7 @@ fixed_df = pd.read_csv(
 )
 fixed_df[:3]
 
-# TODO: do the same with polars
+# TODO: do the same (or similar) with polars
 
 
 # %%
@@ -54,7 +54,7 @@ fixed_df["Berri 1"]
 
 
 # %%
-# Plotting is quite easy in Pandas; with Polars data frames you might have to use the Seaborn library
+# Plotting is quite easy in Pandas
 fixed_df["Berri 1"].plot()
 
 # TODO: how would you do this with a Polars data frame?
@@ -66,4 +66,4 @@ fixed_df["Berri 1"].plot()
 
 fixed_df.plot(figsize=(15, 10))
 
-# TODO: how would you do this with a Polars data frame?
+# TODO: how would you do this with a Polars data frame? With Polars data frames you might have to use the Seaborn library and it mmight not work out of the box as with pandas.

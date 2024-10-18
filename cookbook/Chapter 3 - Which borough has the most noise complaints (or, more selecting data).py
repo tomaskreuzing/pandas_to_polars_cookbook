@@ -1,7 +1,6 @@
 # %%
 import pandas as pd
 import matplotlib.pyplot as plt
-import polars as pl
 
 
 # Make the graphs a bit prettier, and bigger
@@ -19,7 +18,7 @@ pd.set_option("display.max_columns", 60)
 complaints = pd.read_csv("../data/311-service-requests.csv", dtype="unicode")
 
 # %%
-# TODO: rewrite the above using the polars library and call the data frame pl_complaints
+# TODO: rewrite the above using the polars library (you might have to import it above) and call the data frame pl_complaints
 
 # %%
 # 3.1 Selecting only noise complaints
@@ -45,7 +44,8 @@ in_brooklyn = complaints["Borough"] == "BROOKLYN"
 complaints[is_noise & in_brooklyn][:5]
 
 # %%
-# TODO: rewrite the above using the polars library
+# TODO: rewrite the above using the Polars library. In polars these conditions are called Expressions.
+# Check out the Polars documentation for more info.
 
 
 # %%

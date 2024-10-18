@@ -25,7 +25,6 @@ bikes["Berri 1"].plot()
 plt.show()
 
 # TODO: Load the data using Polars
-# Hint: Use pl.read_csv() with appropriate options
 
 # %% Plot Berri 1 data
 # Next up, we're just going to look at the Berri bike path. Berri is a street in Montreal, with a pretty important bike path. I use it mostly on my way to the library now, but I used to take it to work sometimes when I worked in Old Montreal.
@@ -85,7 +84,7 @@ weekday_counts.index = [
     "Sunday",
 ]
 
-# TODO: Rename index using Polars
+# TODO: Rename index using Polars, if possible.
 
 
 # %% Plot results

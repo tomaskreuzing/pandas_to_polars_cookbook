@@ -40,7 +40,7 @@ weather_mar2012 = pd.read_csv(
 )
 weather_mar2012.head()
 
-# TODO: rewrite using Polars
+# TODO: rewrite using Polars. Yes, Polars can handle URLs similarly.
 
 
 # %%
@@ -168,7 +168,7 @@ def download_weather_month(year, month):
     return weather_data_clean
 
 
-# TODO: redefine these functions using polars
+# TODO: redefine these functions using polars and your code above
 
 # %%
 download_weather_month(2012, 1)[:5]
