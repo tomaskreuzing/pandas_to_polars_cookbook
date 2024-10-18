@@ -1,72 +1,53 @@
-Pandas cookbook
-===============
+# Pandas cookbook
 
-This repo was copied from [pandas_cookbook](https://github.com/jvns/pandas-cookbook). Do have a look at
-the original.
+This repo was copied from [pandas_cookbook](https://github.com/jvns/pandas-cookbook). Do have a
+look at the original.
 
-Your job is to turn this pandas cookbook into a polars cookbook.
-Some good resources for polars are:
-- The official documentation [here](https://docs.pola.rs/api/python/stable/reference/dataframe/index.html)
-- Calmcode.io tutorial [here](https://calmcode.io/course/polars/introduction)
-- Feel free to use chat bots like ChatGPT, Claude, or Gemini. Or GitHub Copilot.
+There are several chapters that guide you through how to use pandas in the
+[cookbook folder](./cookbook). It will be your job to create a cookbook for polars.
 
-There are several chapters that guide you through how to use pandas in the [cookbook folder](./cookbook). It will be your job to create a cookbook for polars.
+## Getting started
 
-## Exercises
-### Set-up
 1. Fork this repo.
 2. Clone the forked repo and open it in VS Code.
 3. Create a virtual environment from the environment.yml:
 4. Select this environment as your interpreter in VS Code.
 
-**Create a virtual environment from the environment.yml**
+## Objective
 
-a. Open the terminal
+Refactor the "Pandas cookbook" repository into a "Polars cookbook," showcasing common
+functionalities of the Polars library.
 
-b. Go to your workspace folder if you are not already in it: `cd path_to_repo`
+## Background
 
-c. Then type `conda env create -f environment.yml`
+A common task as a data scientist is refactoring code. Refactoring code involves improving its
+readability, efficiency, or adapting it to use different libraries. This exercise focuses on
+rewriting Pandas code using Polars, a relatively new data manipulation library.
 
-**Set Up VS Code to Use the New Environment**
+By completing this assignment, you'll create a valuable "Polars cookbook" on your GitHub profile
+that demonstrates common data manipulation tasks using the Polars library.
 
-a. Open your project folder in VS Code.
+Polars is quickly gaining popularity because of its nice syntax and speed.
 
-b. Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS) to open the Command Palette.
+## Tasks
 
-c. Type "Python: Select Interpreter" and select it.
+1. Fork the repository from the Cambridge-FDS workspace:
+   https://github.com/cambridge-FDS/pandas_to_polars_cookbook
+2. Divide the chapters among team members, ensuring each person is responsible for at least one
+   chapter of the cookbook.
+3. Rewrite each Pandas implementation using Polars. Note that sometimes this might not be directly
+   possible. Particularly plotting is harder with a Polars data frame at the moment.
+4. Create a separate Pull Request (PR) for each change implemented.
+5. Have team members review each other's PRs to ensure everyone gains exposure to various Pandas
+   and Polars functionalities across all chapters.
 
-d. From the list, choose the interpreter that matches your new Conda environment. 
-   It should look something like `polars_cookbook`.
+## Guidelines
 
-e. VS Code will now use this environment for running Python code in this project.
+- Keep Pull Requests concise and focused on specific changes.
+- Each team member should provide PR reviews to maximise learning opportunities.
+- After forking the repo, team members can clone it directly from their teammate's GitHub page.
 
-**Verify the Setup**
+## Resource
 
-Open a Python file or create a new one. In the bottom-left corner of VS Code, 
-you should see the name of your Conda environment. This confirms that VS Code 
-is using the correct environment.
-
-### First changes
-1. Create a branch called "chapter_1"
-2. Switch to this branch
-3. Open the first chapter in the cookbook [here](./cookbook/Chapter%201%20-%20Reading%20from%20a%20CSV.ipynb)
-4. Complete the to-dos in the cells, which means rewriting the pandas code into polars.
-   - For every to-do, use the git flow and add, commit, push
-   - Once you have done your first commit and pushed it to the remote, go to your repo on [GitHub](https://github.com)
-   - GitHub will show you that you created a new branch and ask you to do a pull request. Make a pull request.
-   - Having started your pull request, have a look at your commit. Can you easily identify the changes you have made?
-5. Finish all the to-dos in chapter 1 (do not forget to add, commit, push after every to-do)
-6. Once you have done all to-dos in chapter 1, go back to [GitHub](https://github.com) and merge your branch into main.
-7. After merging in GitHub, don't forget to pull the changes locally. (First change to the main branch, and then do a git pull)
-
-### Better changes
-Above you have seen that doing pull requests with jupyter notebooks are not very visually pleasing.
-
-For this reason, the further chapters are no longer jupyter notebooks but python files. We use a trick, however. You can get all the beauty of the interactiveness of jupyter notebooks using `# %%`. 
-
-Now, for the remaining chapters:
-1. Create a branch for each chapter.
-2. Complete all to-dos and add, commit, push for each to-do you complete.
-   - Have a look at your commits. Can you see how much easier it is to analyse your changes now?
-3. Once finished, merge your branch into main.
-4. Proceed to the next chapter.
+For an introduction to Polars, refer to this tutorial:
+https://calmcode.io/course/polars/introduction
