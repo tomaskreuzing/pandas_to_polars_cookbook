@@ -1,4 +1,118 @@
 # %%
+import polars as pl
+import matplotlib.pyplot as plt
+import numpy as np
+import hvplot.polars
+
+# %%
+pl_weather_2012 = pl.read_csv(
+    "../data/weather_2012.csv"
+    )
+pl_weather_2012.head(5)
+date_times = pl_weather_2012["date_time"].to_list()
+temperatures = pl_weather_2012["temperature_c"].to_list()
+print(date_times)
+print(temperatures)
+#%%
+plt.figure(figsize=(15, 6))
+plt.plot(date_times, temperatures)
+plt.xlabel("Date Time")
+plt.ylabel("Temperature (°C)")
+plt.show()
+
+#%%
+url_template = "http://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=5415&Year={year}&Month={month}&timeframe=1&submit=Download+Data"
+
+year = 2012
+month = 3
+url_march = url_template.format(month=3, year=2012)
+weather_mar2012 = pl.read_csv(
+    url_march,
+    encoding="latin1",
+)
+weather_mar2012.head()
+
+#%%
+weather_mar2012[[s.name for s in weather_mar2012 if not (s.null_count() == weather_mar2012.height)]]
+weather_mar2012.head()
+
+#%%
+weather_mar2012 = weather_mar2012.drop(["Year", "Month", "Day", "Time (LST)"])
+weather_mar2012[:5]
+
+#%%
+weather_mar2012.columns
+
+
+#%%
+# And now rename the columns to make it easier to work with
+weather_mar2012.columns = weather_mar2012.columns.str.replace(
+    'ï»¿"', ""
+)  # Remove the weird characters at the beginning
+weather_mar2012.columns = weather_mar2012.columns.str.replace(
+    "Â", ""
+)  # Remove the weird characters at the
+
+
+#%%
+weather_mar2012 = weather_mar2012.rename(
+    {"Latitude (y)": "Latitude",
+        "Latitude (y)": "Latitude",
+        "Station Name": "Station_Name",
+        "Climate ID": "Climate_ID",
+        "Temp (Â°C)": "Temperature_C",
+        "Dew Point Temp (Â°C)": "Dew_Point_Temp_C",
+        "Rel Hum (%)": "Relative_Humidity",
+        "Wind Spd (km/h)": "Wind_Speed_kmh",
+        "Visibility (km)": "Visibility_km",
+        "Stn Press (kPa)": "Station_Pressure_kPa",
+        "Weather": "Weather",
+        }
+)
+print(weather_mar2012)
+
+#%%
+print(weather_mar2012.columns)
+
+#%%
+weather_mar2012.columns = weather_mar2012.columns.str.to_lowercase()
+print(weather_mar2012.columns)
+
+#%%
+weather_mar2012["temperature_c"].plot(figsize=(15, 5))
+plt.show()
+
+#%%
+plt.figure(figsize=(10, 6))
+plt.plot(weather_mar2012["Date/Time (LST)"].to_list(), weather_mar2012["Temperature_C"].to_list(), color="blue")
+plt.xlabel("Date/Time (LST)")
+plt.ylabel("Temperature (C)")
+plt.title("Temperature Over Time")
+plt.show()
+
+#%%
+# This one's just for fun -- we've already done this before, using groupby and aggregate! We will learn whether or not it gets colder at night. Well, obviously. But let's do it anyway.
+#temperatures = weather_mar2012[["Temperature_C"]].copy()
+temperatures = weather_mar2012.select("Temperature_C", "Date/Time (LST)")
+temperatures = temperatures.with_columns(pl.col("Date/Time (LST)").str.to_datetime("%Y-%m-%d %H:%M"))
+temperatures = temperatures.sort("Date/Time (LST)")
+temperatures = temperatures.group_by_dynamic("Date/Time (LST)", every="1h").agg(pl.col("Temperature_C").median())
+print(temperatures)
+
+#%%
+def download_weather_month(year, month):
+    url_template = "http://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=5415&Year={year}&Month={month}&timeframe=1&submit=Download+Data"
+    url = url_template.format(year=year, month=month)
+    weather_data = pl.read_csv(
+        url
+    )
+    weather_data = weather_data
+    return weather_data
+
+
+##uncertain about the last few sections
+
+# %%
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,6 +129,7 @@ weather_2012_final = pd.read_csv("../data/weather_2012.csv", index_col="date_tim
 weather_2012_final["temperature_c"].plot(figsize=(15, 6))
 plt.show()
 
+
 # TODO: rewrite using Polars
 
 # %%
@@ -26,7 +141,7 @@ plt.show()
 
 
 # This URL has to be fixed first!
-url_template = "http://climate.weather.gc.ca/climateData/bulkdata_e.html?format=csv&stationID=5415&Year={year}&Month={month}&timeframe=1&submit=Download+Data"
+url_template = "http://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=5415&Year={year}&Month={month}&timeframe=1&submit=Download+Data"
 
 year = 2012
 month = 3
@@ -42,13 +157,13 @@ weather_mar2012.head()
 
 # TODO: rewrite using Polars. Yes, Polars can handle URLs similarly.
 
-
 # %%
 # Let's clean up the data a bit.
 # You'll notice in the summary above that there are a few columns which are are either entirely empty or only have a few values in them. Let's get rid of all of those with `dropna`.
 # The argument `axis=1` to `dropna` means "drop columns", not rows", and `how='any'` means "drop the column if any value is null".
 weather_mar2012 = weather_mar2012.dropna(axis=1, how="any")
 weather_mar2012[:5]
+
 
 # This is much better now -- we only have columns with real data.
 
