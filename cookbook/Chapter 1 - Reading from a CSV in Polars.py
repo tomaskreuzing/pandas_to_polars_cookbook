@@ -1,7 +1,9 @@
 # %%
-import pandas as pd
+import polars as pl
 import matplotlib.pyplot as plt
-
+import seaborn as sns
+from pathlib import Path
+path=Path(__file__).parent.parent / "data" / "bikes.csv"
 
 # %%
 # Reading data from a csv file
@@ -11,13 +13,14 @@ import matplotlib.pyplot as plt
 
 # This dataset is a list of how many people were on 7 different bike paths in Montreal, each day.
 
-broken_df = pd.read_csv("../data/bikes.csv", encoding="ISO-8859-1")
+pl_broken_df = pl.read_csv(path, encoding="ISO-8859-1")
 
 # TODO: please load the data with the Polars library (do not forget to import Polars at the top of the script) and call it pl_broken_df
 
 # %%
 # Look at the first 3 rows
-broken_df[:3]
+pl_broken_df.head(3)
+#all data parsed into the very first row, separated by commas
 
 # TODO: do the same with your polars data frame, pl_broken_df
 
@@ -30,15 +33,13 @@ broken_df[:3]
 # * Tell it that our dates have the day first instead of the month first
 # * Set the index to be the 'Date' column
 
-fixed_df = pd.read_csv(
-    "../data/bikes.csv",
-    sep=";",
+pl_fixed_df = pl.read_csv(
+    path,
+    separator=";",
     encoding="latin1",
-    parse_dates=["Date"],
-    dayfirst=True,
-    index_col="Date",
+    try_parse_dates=True,
 )
-fixed_df[:3]
+pl_fixed_df[:3]
 
 # TODO: do the same (or similar) with polars
 
@@ -47,23 +48,34 @@ fixed_df[:3]
 # Selecting a column
 # When you read a CSV, you get a kind of object called a `DataFrame`, which is made up of rows and columns. You get columns out of a DataFrame the same way you get elements out of a dictionary.
 
-# Here's an example:
-fixed_df["Berri 1"]
+pl_fixed_df.select([ pl.col("Date"), pl.col("Berri 1")])
+#need to specify date for it to be included 
 
 # TODO: how would you do this with a Polars data frame?
-
-
+#%%
+pl_fixed_df.head(3)
+pl_fixed_df.plot.line(x='Date', y='Maisonneuve 2')
 # %%
 # Plotting is quite easy in Pandas
-fixed_df["Berri 1"].plot()
+#fixed_df["Berri 1"].plot()
 
 # TODO: how would you do this with a Polars data frame?
-
+pl_fixed_df.plot.line(x='Date', y='Berri 1')
+#polars defers to altair for plotting, does not implement the logic itself
+#we see barely any activity in winter months with peaks between june-september
 
 # %%
 # We can also plot all the columns just as easily. We'll make it a little bigger, too.
 # You can see that it's more squished together, but all the bike paths behave basically the same -- if it's a bad day for cyclists, it's a bad day everywhere.
 
-fixed_df.plot(figsize=(15, 10))
-
+plt.figure(figsize=(15,10))
+#using matplotlib hence the plt syntax
+for col in pl_fixed_df.columns:
+    if col != "Date":
+        sns.lineplot(data=pl_fixed_df, x='Date', y=col, label=col)
+plt.ylabel("Number of cyclists")
+plt.tight_layout
+plt.show()
+#Polars does not work with an index and hence we cannot set date column as an index and plot right away
+#Iteration over all the columns except date necessary
 # TODO: how would you do this with a Polars data frame? With Polars data frames you might have to use the Seaborn library and it mmight not work out of the box as with pandas.
