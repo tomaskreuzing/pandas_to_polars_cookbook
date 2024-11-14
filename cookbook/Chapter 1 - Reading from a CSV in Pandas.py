@@ -1,4 +1,34 @@
 # %%
+import polars as pl
+import matplotlib.pyplot as plt
+
+#%%
+pl_broken_df = pl.read_csv("../data/bikes.csv", encoding="ISO-8859-1")
+
+#%%
+pl_broken_df[:3]
+
+
+#%%
+pl_fixed_df = pl.read_csv(
+    "../data/bikes.csv",
+    separator=";",
+    encoding="latin1",
+    try_parse_dates= True,
+    row_index_name="Date",
+)
+pl_fixed_df[:3]
+
+
+#%%
+pl_fixed_df.select("Berri 1")
+plt.plot(pl_fixed_df["Berri 1"].to_list(), color="blue")
+
+#%%
+plt.plot(pl_fixed_df, color="blue")
+
+
+# %%
 import pandas as pd
 import matplotlib.pyplot as plt
 
