@@ -104,7 +104,7 @@ pl_ratio = pl_noise_complaint_counts.join(
     (pl.col("count") / pl.col("count_total")).alias("noise_complaint_ratio")
 ])
 
-print(pl_normalized)
+#print(pl_normalized)
 
 # %%
 # Plot the results
