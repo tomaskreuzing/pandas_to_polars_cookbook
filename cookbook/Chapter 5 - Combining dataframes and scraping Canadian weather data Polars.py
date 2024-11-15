@@ -15,7 +15,8 @@ plt.rcParams["font.family"] = "sans-serif"
 #altair cant handle this many rows, need seaborn 
 pl_weather_2012_final = pl.read_csv(path, try_parse_dates=True)
 #datetime column in correct format now
-sns.lineplot(data=pl_weather_2012_final, x="date_time", y="temperature_c")
+#%%
+sns.lineplot(data=pl_weather_2012_final, x="Date/Time (LST)", y="Temp (Â°C)")
 #hig var winter months high temps summer months
 # TODO: rewrite using Polars
 
@@ -25,8 +26,6 @@ sns.lineplot(data=pl_weather_2012_final, x="date_time", y="temperature_c")
 
 url_template = "http://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=5415&Year={year}&Month={month}&timeframe=1&submit=Download+Data"
 
-year = 2012
-month = 3
 url_march = url_template.format(month=3, year=2012)
 pl_weather_mar2012 = pl.read_csv(
     url_march,
@@ -120,13 +119,6 @@ pl_daily_temperatures.plot.line(x="hour", y="median_temperature")
 #it looks like the time with the highest median temperature is 14 o clock
 # TODO: redo this using polars
 
-null_columns = [
-    col for col in pl_weather_mar2012.columns
-    if pl_weather_mar2012[col].null_count() > 0
-]
-pl_weather_mar2012 = pl_weather_mar2012.drop(null_columns)
-
-
 #%%
 # Okay, so what if we want the data for the whole year? Ideally the API would just let us download that, but I couldn't figure out a way to do that.
 # First, let's put our work from above into a function that gets the weather for a given month.
@@ -165,22 +157,11 @@ def clean_data(data):
     ]
     return data
 
-year = 2012
-month = 3
-url_march = url_template.format(month=3, year=2012)
-pl_weather_mar2012 = pl.read_csv(
-    url_march,
-    try_parse_dates=True,
-    encoding="latin1",
-    null_values= ""
-)
-pl_weather_mar2012.head()
-
 def download_weather_month(year, month):
     url_template = "http://climate.weather.gc.ca/climate_data/bulk_data_e.html?format=csv&stationID=5415&Year={year}&Month={month}&timeframe=1&submit=Download+Data"
     url = url_template.format(year=year, month=month)
     weather_data = pl.read_csv(
-        url_march,
+        url,
         try_parse_dates=True,
         encoding="latin1",
         null_values= ""
@@ -199,12 +180,16 @@ download_weather_month(2012, 1).head(5)
 # This might take a while
 data_by_month = [download_weather_month(2012, i) for i in range(1, 13)]
 pl_weather_2012 = pl.concat(data_by_month)
-pl_weather_2012.head()
 # TODO: do the same with polars
 # %%
 pl_weather_2012
 
 # %%
+sns.lineplot(data=pl_weather_2012, x="date/time (lst)", y="temperature_c" )
+# %%
 # Now, let's save the data.
+path = Path(__file__).parent.parent / "data" / "weather_2012_processed.csv"
+
 pl_weather_2012.write_csv(path)
 # TODO: use polars to save the data.
+# %%
